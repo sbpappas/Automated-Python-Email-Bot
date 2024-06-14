@@ -92,8 +92,8 @@ def check_price():
             break
     now_price = float(now_price[1::])
     print(now_price)
-    if now_price < 1999.00:
+    if now_price < 50:
         message = 'The price of your preferred item has dropped to: ' + str(now_price) + ' - Check it out here: ' + URL
-        send_email('sbpappas0@gmail.com', 'Price has dropped', message)
+        send_email('sbpappas0@gmail.com', 'Check this: Price has dropped', message)
 
 check_price()
