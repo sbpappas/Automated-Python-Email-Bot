@@ -90,8 +90,14 @@ def check_price():
         if div.get('data-auid') == 'nowPrice':
             now_price = div.get_text(strip=True)
             break
-    now_price = float(now_price[1::])
-    print(now_price)
+    if isinstance(now_price, str):
+        now_price = float(now_price[1::])
+    #elif isinstance(now_price, int):
+    #    now_price = str(now_price)
+    #    now_price = float(now_price[1::])
+    else:
+        print("not sure what type now_price is - You might need to verify the link as a human")
+    print("Price: " + str(now_price))
     if now_price < 50:
         message = 'The price of your preferred item has dropped to: ' + str(now_price) + ' - Check it out here: ' + URL
         send_email('sbpappas0@gmail.com', 'Check this: Price has dropped', message)
