@@ -60,11 +60,8 @@ def send_email(to_email, subject, message):
     except Exception as e:
         print(f'An error occurred: {e}')
 
-# Usage
-#send_email('samuel.pappas@outlook.com', 'Automated Email with Python', 'LETS GOOOOOOOO')
-
 URL = 'https://www.academy.com/p/new-balance-mens-608-v5-performance-training-shoes?sku=white-10-5-eeee'
-
+URL = 'https://shop.atlasskateboarding.com/collections/footwear/products/nike-air-max-ishod-1'
 
 headers = {"User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
@@ -79,26 +76,31 @@ def check_price():
     soup = BeautifulSoup(page.content, 'html.parser')
     #print(soup.prettify()[:1000])  # Print first 1000 characters of the HTML to inspect
 
-    title = soup.find(id="title")
-    print(title)
+    #title = soup.find(id="title")
+    #print(title)
     #print(title.get_text().strip() if title else "Title not found")
 
-    price = soup.find_all("div", {"class": "promo"})
+    #price = soup.find_all("div", {"class": "promo"}) # for academy shoes
+    price = soup.find("div", class_="product-price") # for atlas shoes
     #print(price)
     now_price = 10000
-    for div in price:
-        if div.get('data-auid') == 'nowPrice':
-            now_price = div.get_text(strip=True)
-            break
-    if isinstance(now_price, str):
-        now_price = float(now_price[1::])
-    #elif isinstance(now_price, int):
-    #    now_price = str(now_price)
-    #    now_price = float(now_price[1::])
+    if price:
+        now_price = price.get_text(strip=True)
+        print(f"The price is: {now_price}")
     else:
-        print("not sure what type now_price is - You might need to verify the link as a human")
-    print("Price: " + str(now_price))
-    if now_price < 50:
+        print("Price div not found.")
+    # for div in price:
+    #     if div.get('data-auid') == 'nowPrice':
+    #         now_price = div.get_text(strip=True)
+    #         print("got the price")
+    #         break
+    # if isinstance(now_price, str):
+    #     now_price = float(now_price[1::])
+    #     print("Price: " + str(now_price))
+    # else:
+    #     print("not sure what type now_price is - You might need to verify the link as a human")
+    now_price = float(now_price[1::])
+    if now_price < 112:
         message = 'The price of your preferred item has dropped to: ' + str(now_price) + ' - Check it out here: ' + URL
         send_email('sbpappas0@gmail.com', 'Check this: Price has dropped', message)
 
