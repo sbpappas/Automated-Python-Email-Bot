@@ -7,6 +7,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+import time
 
 #for web scraper:import requests
 from bs4 import BeautifulSoup
@@ -76,15 +77,20 @@ def check_price():
     soup = BeautifulSoup(page.content, 'html.parser')
     #print(soup.prettify()[:1000])  # Print first 1000 characters of the HTML to inspect
 
-    #title = soup.find(id="title")
-    #print(title)
-    #print(title.get_text().strip() if title else "Title not found")
+    title = soup.find("div", class_="product-title")
+
+    if title:
+        title = title.get_text().strip()
+        print(title)
+    else: print("Title not found")
 
     #price = soup.find_all("div", {"class": "promo"}) # for academy shoes
     price = soup.find("div", class_="product-price") # for atlas shoes
     #print(price)
     now_price = 10000
     if price:
+        #for div in price:
+            
         now_price = price.get_text(strip=True)
         print(f"The price is: {now_price}")
     else:
@@ -101,7 +107,11 @@ def check_price():
     #     print("not sure what type now_price is - You might need to verify the link as a human")
     now_price = float(now_price[1::])
     if now_price < 112:
-        message = 'The price of your preferred item has dropped to: ' + str(now_price) + ' - Check it out here: ' + URL
-        send_email('sbpappas0@gmail.com', 'Check this: Price has dropped', message)
+        message = 'The price of your preferred item - ' + str(title) + ' - has dropped to: $' + str(now_price) + ' - Check it out here: ' + URL
+        send_email('sbpappas0@gmail.com', 'PRICE DROP: ' + str(title), message)
 
 check_price()
+
+while(True):
+    check_price()
+    time.sleep(60 * 60 * 24)
