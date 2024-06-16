@@ -61,8 +61,9 @@ def send_email(to_email, subject, message):
     except Exception as e:
         print(f'An error occurred: {e}')
 
-URL = 'https://www.academy.com/p/new-balance-mens-608-v5-performance-training-shoes?sku=white-10-5-eeee'
-URL = 'https://shop.atlasskateboarding.com/collections/footwear/products/nike-air-max-ishod-1'
+#URL = 'https://www.academy.com/p/new-balance-mens-608-v5-performance-training-shoes?sku=white-10-5-eeee'
+#URL = 'https://shop.atlasskateboarding.com/collections/footwear/products/nike-air-max-ishod-1'
+URL = 'https://shop.atlasskateboarding.com/collections/sale/products/converse-as-1-pro-ox-3'
 
 headers = {"User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
@@ -85,12 +86,11 @@ def check_price():
     else: print("Title not found")
 
     #price = soup.find_all("div", {"class": "promo"}) # for academy shoes
-    price = soup.find("div", class_="product-price") # for atlas shoes
-    #print(price)
+    price = soup.find("span", class_="sale-price")
+    if not price:
+        price = soup.find("div", class_="product-price") # for atlas 
     now_price = 10000
     if price:
-        #for div in price:
-            
         now_price = price.get_text(strip=True)
         print(f"The price is: {now_price}")
     else:
@@ -112,6 +112,6 @@ def check_price():
 
 check_price()
 
-while(True):
-    check_price()
-    time.sleep(60 * 60 * 24)
+# while(True):
+#     check_price()
+#     time.sleep(60 * 60 * 24)
