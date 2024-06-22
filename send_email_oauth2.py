@@ -112,6 +112,7 @@ def check_price():
 
 check_price()
 
+#updated cron to do this work below, hopefully it works.
 # while(True):
 #     check_price()
 #     time.sleep(60 * 60 * 24)
